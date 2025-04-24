@@ -21,11 +21,7 @@ class ScrapedContent:
     title: Optional[str] = None
     meta_description: Optional[str] = None
     h1_text: Optional[str] = None
-    text_content: Optional[str] = None
-    images: List[str] = None
-    links: List[str] = None
     address: Optional[Dict[str, Any]] = None
-    structured_data: List[Dict[str, Any]] = field(default_factory=list)
 
 
 class WebCrawler:
@@ -162,7 +158,7 @@ class WebCrawler:
     async def scrape_page_content(self, url: str, html_content: str) -> ScrapedContent:
         soup = BeautifulSoup(html_content, "html.parser")
 
-        scraped = ScrapedContent(url=url, images=[], links=[])
+        scraped = ScrapedContent(url=url)
 
         if soup.title:
             scraped.title = soup.title.text.strip()
@@ -211,5 +207,6 @@ class WebCrawler:
                 continue
 
         scraped.structured_data = structured_data
+
 
         return scraped
