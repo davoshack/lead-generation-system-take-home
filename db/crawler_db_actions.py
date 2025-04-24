@@ -106,7 +106,12 @@ async def export_scraped_content_to_csv(output_file: str = "scraped_content.csv"
                     if row_dict[field] and row_dict[field] != "null":
                         try:
                             parsed = json.loads(row_dict[field])
-                            row_dict[field] = json.dumps(parsed, ensure_ascii=False)
+                            address = (
+                                parsed.get("streetAddress")
+                                + ", "
+                                + parsed.get("addressRegion")
+                            )
+                            row_dict[field] = address
                         except json.JSONDecodeError:
                             pass
 
