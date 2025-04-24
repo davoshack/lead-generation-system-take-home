@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.python-version
 build/
 develop-eggs/
 dist/
@@ -60,6 +61,7 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+*.db
 
 # Flask stuff:
 instance/
@@ -74,6 +76,7 @@ docs/_build/
 # PyBuilder
 .pybuilder/
 target/
+.vscode/
 
 # Jupyter Notebook
 .ipynb_checkpoints

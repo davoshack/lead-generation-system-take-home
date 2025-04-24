@@ -1,0 +1,9 @@
+black
+flake8
+
+pandas 
+aiohttp 
+httpx
+aiosqlite
+beautifulsoup4 
+aiofiles
