@@ -175,14 +175,6 @@ class WebCrawler:
         if h1_tag:
             scraped.h1_text = h1_tag.text.strip()
 
-        main_content = []
-        for paragraph in soup.find_all("p"):
-            text = paragraph.text.strip()
-            if text and len(text) > 20:
-                main_content.append(text)
-
-        scraped.text_content = "\n\n".join(main_content) if main_content else None
-
         json_ld_scripts = soup.find_all("script", type="application/ld+json")
         structured_data = []
 
@@ -219,21 +211,5 @@ class WebCrawler:
                 continue
 
         scraped.structured_data = structured_data
-
-        for img in soup.find_all("img"):
-            src = img.get("src")
-            if src:
-                if src.startswith("/"):
-                    base_domain = "/".join(url.split("/")[:3])
-                    src = f"{base_domain}{src}"
-                scraped.images.append(src)
-
-        for link in soup.find_all("a"):
-            href = link.get("href")
-            if href and not href.startswith("#") and not href.startswith("javascript:"):
-                if href.startswith("/"):
-                    base_domain = "/".join(url.split("/")[:3])
-                    href = f"{base_domain}{href}"
-                scraped.links.append(href)
 
         return scraped
