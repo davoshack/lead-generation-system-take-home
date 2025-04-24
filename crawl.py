@@ -144,12 +144,10 @@ class WebCrawler:
             scraped.h1_text = h1_tag.text.strip()
 
         json_ld_scripts = soup.find_all("script", type="application/ld+json")
-        structured_data = []
 
         for script in json_ld_scripts:
             try:
                 data = json.loads(script.string)
-                structured_data.append(data)
 
                 if isinstance(data, dict):
                     if "address" in data:
@@ -177,7 +175,5 @@ class WebCrawler:
                                 break
             except (json.JSONDecodeError, TypeError):
                 continue
-
-        scraped.structured_data = structured_data
 
         return scraped

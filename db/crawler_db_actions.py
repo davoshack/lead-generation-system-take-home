@@ -35,7 +35,6 @@ async def store_scraped_content(scraped_content):
         await db.execute(
             """
             CREATE TABLE IF NOT EXISTS scraped_content (
-                url TEXT PRIMARY KEY,
                 title TEXT,
                 meta_description TEXT,
                 h1_text TEXT,
@@ -51,11 +50,10 @@ async def store_scraped_content(scraped_content):
         await db.execute(
             """
             INSERT OR REPLACE INTO scraped_content 
-            (url, title, meta_description, h1_text, address)
-            VALUES (?, ?, ?, ?, ?)
+            (title, meta_description, h1_text, address)
+            VALUES (?, ?, ?, ?)
         """,
             (
-                scraped_content.url,
                 scraped_content.title,
                 scraped_content.meta_description,
                 scraped_content.h1_text,
