@@ -10,7 +10,6 @@ from typing import Callable, Iterable, Dict, List, Optional, Any
 from utils.urls_utils import UrlParser
 from db.crawler_db_actions import (
     store_data_responses,
-    store_statistics,
     store_scraped_content,
 )
 
@@ -56,13 +55,6 @@ class WebCrawler:
         for worker in workers:
             worker.cancel()
 
-        await store_statistics(
-            len(self.urls_done),
-            self.total_number_errors,
-            self.total_number_urls_crawled_per_domain,
-            self.total_number_urls_per_status_code,
-        )
-
     async def worker(self):
         while True:
             try:
@@ -98,8 +90,6 @@ class WebCrawler:
         }
 
         response = await self.client.get(url, follow_redirects=False, headers=headers)
-
-        self.get_total_number_urls_per_status_code(response)
 
         self.parser = await self.parse_links(
             base=str(response.url),
