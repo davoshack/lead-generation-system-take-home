@@ -18,8 +18,8 @@ from db.crawler_db_actions import (
 class ScrapedContent:
     url: str
     title: Optional[str] = None
-    meta_description: Optional[str] = None
-    h1_text: Optional[str] = None
+    description: Optional[str] = None
+    name: Optional[str] = None
     address: Optional[Dict[str, Any]] = None
 
 
@@ -137,11 +137,11 @@ class WebCrawler:
 
         meta_desc = soup.find("meta", attrs={"name": "description"})
         if meta_desc and meta_desc.get("content"):
-            scraped.meta_description = meta_desc.get("content").strip()
+            scraped.description = meta_desc.get("content").strip()
 
         h1_tag = soup.find("h1")
         if h1_tag:
-            scraped.h1_text = h1_tag.text.strip()
+            scraped.name = h1_tag.text.strip()
 
         json_ld_scripts = soup.find_all("script", type="application/ld+json")
 
