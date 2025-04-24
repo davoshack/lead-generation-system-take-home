@@ -30,46 +30,6 @@ async def store_data_responses(
         await db.close()
 
 
-async def store_statistics(
-    total_number_urls_crawled: int,
-    total_number_errors_crawling: int,
-    total_number_urls_crawled_per_domain: dict[str, int],
-    total_number_urls_per_status_code: dict[str, int],
-):
-    async with aiosqlite.connect("db/crawler_data.db") as db:
-        await db.execute(
-            """
-            CREATE TABLE IF NOT EXISTS statistics (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            total_number_urls_crawled INTEGER,
-            total_number_errors_crawling INTEGER,
-            total_number_urls_crawled_per_domain TEXT,
-            total_number_urls_per_status_code TEXT
-            )
-        """
-        )
-        total_number_urls_crawled_per_domain_json = json.dumps(
-            total_number_urls_crawled_per_domain
-        )
-        total_number_urls_per_status_code_json = json.dumps(
-            total_number_urls_per_status_code
-        )
-        await db.execute(
-            """
-            INSERT OR REPLACE INTO statistics (total_number_urls_crawled, total_number_errors_crawling, total_number_urls_crawled_per_domain, total_number_urls_per_status_code)
-            VALUES (?, ?, ?, ?)
-        """,
-            (
-                total_number_urls_crawled,
-                total_number_errors_crawling,
-                total_number_urls_crawled_per_domain_json,
-                total_number_urls_per_status_code_json,
-            ),
-        )
-        await db.commit()
-        await db.close()
-
-
 async def store_scraped_content(scraped_content):
     async with aiosqlite.connect("db/crawler_data.db") as db:
         await db.execute(

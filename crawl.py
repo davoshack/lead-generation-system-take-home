@@ -118,24 +118,6 @@ class WebCrawler:
 
         self.urls_done.add(url)
 
-    def get_total_number_urls_per_status_code(self, response):
-        if response.status_code == httpx.codes.OK:
-            self.total_number_urls_per_status_code["200"] = (
-                self.total_number_urls_per_status_code.get("200", 0) + 1
-            )
-        if response.status_code == httpx.codes.NOT_FOUND:
-            self.total_number_urls_per_status_code["404"] = (
-                self.total_number_urls_per_status_code.get("404", 0) + 1
-            )
-        if response.status_code == httpx.codes.FORBIDDEN:
-            self.total_number_urls_per_status_code["403"] = (
-                self.total_number_urls_per_status_code.get("403", 0) + 1
-            )
-        if response.status_code == httpx.codes.INTERNAL_SERVER_ERROR:
-            self.total_number_urls_per_status_code["500"] = (
-                self.total_number_urls_per_status_code.get("500", 0) + 1
-            )
-
     async def parse_links(self, base: str, text: str) -> set[str]:
         parser = UrlParser(
             base, self.filter_url, self.total_number_urls_crawled_per_domain
@@ -207,6 +189,5 @@ class WebCrawler:
                 continue
 
         scraped.structured_data = structured_data
-
 
         return scraped
